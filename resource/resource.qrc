@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="images"/>
+  <qresource prefix="icon">
+    <file>images/icon_switch_hover.png</file>
+    <file>images/icon_switch_main.png</file>
+    <file>images/icon_switch_pressed.png</file>
+    <file>images/icon_user_hover.png</file>
+    <file>images/icon_user_main.png</file>
+    <file>images/icon_user_pressed.png</file>
+  </qresource>
+</RCC>
