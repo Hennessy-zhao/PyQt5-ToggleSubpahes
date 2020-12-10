@@ -86,8 +86,6 @@ class AdminPane(QWidget,Ui_Form):
 
 
 
-
-
 if __name__=='__main__':
     app=QApplication(sys.argv)
     form=AdminPane()

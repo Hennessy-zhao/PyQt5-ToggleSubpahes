@@ -1,7 +1,5 @@
 # -*- coding:UTF-8 -*-
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 
 from Page_Welcome_Pane import PageWelcomePane
 from Report_Dialog import ReportDialog
@@ -34,18 +32,21 @@ class AdminPane(QWidget,Ui_Form):
         self.content_tabW.tabBar().setTabButton(0, self.content_tabW.tabBar().RightSide, None)  # 设置欢迎子页面的关闭按钮不可点击
 
 
-
-
     # 关闭界面触发函数
     def closeEvent(self, QCloseEvent):
-        for tab_widget in self.tab_list_widget:
-            if tab_widget[1]:
-                tab_widget[1].deleteLater()
+        for tab_widget in self.tab_list_widget:         #遍历子页面控件列表
+            if tab_widget[1]:                           #如果子页面被创建
+                tab_widget[1].deleteLater()             #销毁子页面
 
 
     # 定义变量函数
     def define_variate(self):
-        self.tab_list_widget = [[False,False] for i in range(5)]    # 选项卡对应子页面控件的列表,初始设置为False,即不存在。存放子页面的Qwidget
+        '''
+        选项卡对应子页面控件的列表
+        初始每一项设置为[False,False],第一个False表示该子页面未被添加至界面，
+        第二个False为该子页面未被创建，创建后存放子页面对象
+        '''
+        self.tab_list_widget = [[False,False] for i in range(5)]        #选项卡对应子页面控件的列表
 
         self.report_dialog = ReportDialog(self)             # 创建报告问题模块
 
@@ -56,19 +57,19 @@ class AdminPane(QWidget,Ui_Form):
         filter_list = list(filter(str.isdigit, sender.objectName()))  # 获取控件的objname的数字项
         tab_index = int(filter_list[0])
 
-        tab_widget = self.tab_list_widget[tab_index]        #获取当前要显示的子页面对象
-        page_widget=tab_widget[1]
-        if not tab_widget[0]:
-            if not page_widget:
-                page_widget=self.add_tab_page(tab_index)
-                self.tab_list_widget[tab_index][1]=page_widget
+        tab_widget = self.tab_list_widget[tab_index]            #获取选项卡对应的子页面数据
+        page_widget=tab_widget[1]                               #获取子页面对象
+        if not tab_widget[0]:                                   #子页面未被添加至界面
+            if not page_widget:                                 #子页面对象未被创建
+                page_widget=self.add_tab_page(tab_index)        #创建并获取子页面对象
+                self.tab_list_widget[tab_index][1]=page_widget  #修改选项卡列表对应子页面对象数据
 
-            tab_text = sender.text()
-            self.content_tabW.addTab(tab_widget[1], tab_text)  # 将子窗口添加至子页面
-            self.tab_list_widget[tab_index][0]=True
+            #子页面对象已创建
+            tab_text = sender.text()                            #获取当前按钮text内容
+            self.content_tabW.addTab(tab_widget[1], tab_text)   #添加子页面
+            self.tab_list_widget[tab_index][0]=True             #修改选项卡列表对应子页面是否添加数据
 
-
-        self.content_tabW.setCurrentWidget(page_widget)      # 将子页面显示在最顶层
+        self.content_tabW.setCurrentWidget(page_widget)      # 将该子页面显示在最顶层
 
         # 添加页面函数
     def add_tab_page(self, tab_index=-1):
@@ -80,9 +81,8 @@ class AdminPane(QWidget,Ui_Form):
             child_window = PageTwoOnePane()                 #创建子页面对象
         elif tab_index==3:                                  #选项卡2_2被点击
             child_window = PageTwoTwoPane()                 #创建子页面对象
-        else:                                  #选项卡3_1被点击
+        else:                                               #选项卡3_1被点击
             child_window = PageThreeOnePane()               #创建子页面对象
-
 
         return child_window                                 #返回添加的子页面对象
 
@@ -92,9 +92,9 @@ class AdminPane(QWidget,Ui_Form):
         page_widget = self.content_tabW.widget(page_index)  # 获取子页面Qwidget
         self.content_tabW.removeTab(page_index)             # 移除该子页面
 
-        for tab_widget in self.tab_list_widget:
-            if tab_widget[1]==page_widget:
-                tab_widget[0]=False
+        for tab_widget in self.tab_list_widget:             #遍历子页面控件列表
+            if tab_widget[1]==page_widget:                  #找到当前子页面对应的数据项
+                tab_widget[0]=False                         #修改选项卡列表对应子页面是否添加数据
 
 
     # 显示报告窗口
